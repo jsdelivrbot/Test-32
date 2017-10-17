@@ -1,69 +1,82 @@
+//window.CP.PenTimer.MAX_TIME_IN_LOOP_WO_EXIT = 8000;
+
+//import React, { Component } from 'react';
+//GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
+
+
+//var urlToFetch = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
+
+
 import React, { Component } from 'react';
-import Draggable from 'react-draggable';
-const socket = io.connect();
+import ReactDOM from 'react-dom';
+//var ReactDOM = require('react-dom');
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+import axios from 'axios';
 
-    this.state = {
-      counter: 0,
-      activeDrags: 0
-    };
+import CamperList from './camper_list.js';
+import CamperListItem from './camper_list_item.js';
 
-    this.onInit = this.onInit.bind(this);
-    this.handleIncrement = this.handleIncrement.bind(this);
-    this.onServerIncrement = this.onServerIncrement.bind(this);
-    this.onStart = this.onStart.bind(this);
-    this.onStop = this.onStop.bind(this);
+export default class FetchComp extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			requestFailed: false,
+			recentCampers: [],
+			allTimeCampers: [],
+			currentDisplay: 'recentCampers'
+		}
+	}
+	
+  componentDidMount(){
+	  
+    axios.all([this.fetchRecentCampers(), this.fetchTopCampers()])
+      .then(axios.spread((recentCampers, allTimeCampers) => {
+			console.log(recentCampers.data);
+			
+			this.setState({
+            recentCampers: recentCampers.data,
+            allTimeCampers: allTimeCampers.data
+          });  
+      }));
   }
+  
+    fetchRecentCampers(){
+      return axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/recent');
+    }
+    
+    fetchTopCampers(){
+      return axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
+    }
+	
+	changeDisplay(list){
+		this.setState({ list });
+	}
 
-  onInit({ counter }) {
-    this.setState({ counter });
-  }
+    render() {
 
-  handleIncrement() {
-    let { counter } = this.state;
-    counter++;
-    this.setState({ counter });
-    socket.emit('incrementCounter', counter);
-  }
-
-  onServerIncrement({ counter }) {
-    this.setState({ counter });
-  }
-
-  componentDidMount() {
-    socket.on('init', this.onInit);
-    socket.on('incrementCounter', this.onServerIncrement);
-  }
-
-  onStart() {
-    this.setState({ activeDrags: ++this.state.activeDrags });
-  }
-
-  onStop() {
-    this.setState({ activeDrags: --this.state.activeDrags });
-  }
-
-  render() {
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <h1>Shake Trump!!!</h1>
-          <Draggable onStart={this.onStart} onStop={this.onStop}>
-            <div>
-              <img
-                src="/public/trump.png"
-                className="trump"
-                draggable="false"
-                onClick={this.handleIncrement}
-              />
-            </div>
-          </Draggable>
-          <h2>{`So far, Trump has been shaken ${this.state.counter} times.`}</h2>
+		console.log(this.state);
+	
+      return(
+	  
+        <div>
+            <h2>  </h2>
+            <button onClick={() => this.changeDisplay('recentCampers')} className="btn btn-primary"> Recent Campers </button>
+            <button onClick={() => this.changeDisplay('allTimeCampers')} className="btn btn-primary"> All Time Campers </button>
+			
+			<div>
+			  <CamperList campers={this.state.recentCampers} > </CamperList>
+			</div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 }
+
+
+
+
+
+
+ReactDOM.render(
+  React.createElement(FetchComp, null, null),
+  document.getElementById('root')
+);
