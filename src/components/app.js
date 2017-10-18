@@ -33,14 +33,14 @@ export default class FetchComp extends Component {
       return axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
     }
 
-		changeDisplay(list){
-			this.setState({ list });
+		changeDisplay(currentDisplay){
+			this.setState({ currentDisplay });
 		}
 
     render() {
       return(
         <div>
-	        <h2>  </h2>
+	        <h2>{`Displaying the ${this.state.currentDisplay}`}</h2>
 	        <button
 						onClick={() => this.changeDisplay('recentCampers')}
 						className="btn btn-primary"
