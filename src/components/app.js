@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 import axios from 'axios';
 
 import CamperList from './camper_list.js';
@@ -14,8 +15,8 @@ export default class FetchComp extends Component {
 			currentDisplay: 'recentCampers'
 		}
 	}
-
-  componentDidMount(){
+  
+  componentWillMount() {
     axios.all([this.fetchRecentCampers(), this.fetchTopCampers()])
       .then(axios.spread((recentCampers, allTimeCampers) => {
 			this.setState({
