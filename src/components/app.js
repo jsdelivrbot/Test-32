@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import CamperList from './camper_list.js';
-import CamperListItem from './camper_list_item.js';
 
 export default class FetchComp extends Component {
 	constructor(props) {
@@ -54,7 +53,7 @@ export default class FetchComp extends Component {
 					>
 						All Time Campers
 					</button>
-			  	<CamperList campers={this.state.recentCampers} />
+			  	<CamperList campers={this.state[this.state.currentDisplay]} />
         </div>
       );
     }
