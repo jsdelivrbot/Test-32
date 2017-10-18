@@ -1,15 +1,19 @@
 import React from 'react';
 
-const CamperListItem = (props) => {
+const CamperListItem = ({ number, camper: { username, recent, alltime } }) => {
   return (
-	<div>
 		<tr>
-		  <td> { number } </td>
-		  <td> <a href={`https://freecodecamp/${camper.username}`} target="_blank">{camper.username}</a></td>
-		  <td>{camper.recent}</td>
-		  <td>{camper.alltime}</td>
+		  <td>{number}</td>
+		  <td>
+        <a href={`https://freecodecamp/${username}`}
+          target="_blank"
+        >
+          <p>{username}</p>
+        </a>
+      </td>
+		  <td>{recent}</td>
+		  <td>{alltime}</td>
 		</tr>
-	</div>
   );
 }
 

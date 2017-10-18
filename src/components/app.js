@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import CamperList from './camper_list.js';
 
-export default class FetchComp extends React.Component {
+export default class FetchComp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -15,57 +15,47 @@ export default class FetchComp extends React.Component {
 			currentDisplay: 'recentCampers'
 		}
 	}
-	
-  componentWillMount(){
-	  
+  
+  componentWillMount() {
     axios.all([this.fetchRecentCampers(), this.fetchTopCampers()])
       .then(axios.spread((recentCampers, allTimeCampers) => {
-			console.log(recentCampers.data);
-			
 			this.setState({
-            recentCampers: recentCampers.data,
-            allTimeCampers: allTimeCampers.data
-          });  
-      }));
+        recentCampers: recentCampers.data,
+        allTimeCampers: allTimeCampers.data
+      });
+    }));
   }
-  
+
     fetchRecentCampers(){
       return axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/recent');
     }
-    
+
     fetchTopCampers(){
       return axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
     }
-	
-	changeDisplay(list){
-		this.setState({ list });
-	}
+
+		changeDisplay(currentDisplay){
+			this.setState({ currentDisplay });
+		}
 
     render() {
-
-		console.log(this.state);
-	
       return(
-	  
         <div>
-            <h2>  </h2>
-            <button onClick={() => this.changeDisplay('recentCampers')} className="btn btn-primary"> Recent Campers </button>
-            <button onClick={() => this.changeDisplay('allTimeCampers')} className="btn btn-primary"> All Time Campers </button>
-			
-			<div>
-			  <CamperList campers={this.state.recentCampers} />
-			</div>
+	        <h2>{`Displaying the ${this.state.currentDisplay}`}</h2>
+	        <button
+						onClick={() => this.changeDisplay('recentCampers')}
+						className="btn btn-primary"
+					>
+						Recent Campers
+					</button>
+	        <button
+						onClick={() => this.changeDisplay('allTimeCampers')}
+						className="btn btn-primary"
+					>
+						All Time Campers
+					</button>
+			  	<CamperList campers={this.state[this.state.currentDisplay]} />
         </div>
       );
     }
 }
-
-
-
-
-
-
-ReactDOM.render(
-  React.createElement(FetchComp, null, null),
-  document.getElementById('root')
-);
