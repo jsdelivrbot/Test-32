@@ -1,20 +1,9 @@
-//window.CP.PenTimer.MAX_TIME_IN_LOOP_WO_EXIT = 8000;
-
-//import React, { Component } from 'react';
-//GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest;
-
-
-//var urlToFetch = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent'
-
-
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-//var ReactDOM = require('react-dom');
 
 import axios from 'axios';
 
 import CamperList from './camper_list.js';
-//import CamperListItem from './camper_list_item.js';
 
 export default class FetchComp extends React.Component {
 	constructor(props) {
