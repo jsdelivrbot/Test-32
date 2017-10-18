@@ -53,7 +53,7 @@ export default class FetchComp extends React.Component {
             <button onClick={() => this.changeDisplay('allTimeCampers')} className="btn btn-primary"> All Time Campers </button>
 			
 			<div>
-			  <CamperList campers={this.state.recentCampers} > </CamperList>
+			  <CamperList campers={this.state.recentCampers} />
 			</div>
         </div>
       );

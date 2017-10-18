@@ -5,7 +5,7 @@ import CamperListItem from './camper_list_item';
 const CamperList = ({ campers }) => {
   
   const Items = campers.map((camper, index) => {
-    return <CamperListItem key={index} camper={camper} number={index+1} > </CamperListItem>
+    return <CamperListItem key={index} camper={camper} number={index+1} />
   });
   
   return (
